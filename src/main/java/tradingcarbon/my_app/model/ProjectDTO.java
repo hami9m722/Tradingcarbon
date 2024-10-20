@@ -45,13 +45,8 @@ public class ProjectDTO {
     private String price;
 
     @Size()
-    private String methodPayment;
-
-    @Size()
     private String projectCredit;
 
-    @Size()
-    private String creditDetail;
 
     @Size()
     private String creditId;
@@ -60,7 +55,5 @@ public class ProjectDTO {
 
     @NotNull
     private UUID userId;
-
-    private Long reviewProjectId;
 
 }
