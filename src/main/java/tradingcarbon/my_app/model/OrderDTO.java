@@ -28,12 +28,6 @@ public class OrderDTO {
 
     private UUID buyerId;
 
-    @OrderPaymentIdUnique
-    private UUID paymentId;
 
-    @OrderConstractIdUnique
-    private Long constractId;
-
-    private Long staffId;
 
 }

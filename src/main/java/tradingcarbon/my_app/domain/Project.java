@@ -62,6 +62,21 @@ public class Project {
     @Column
     private String creditTimeStart;
 
+    @Column
+    private String price;
+
+    @Column
+    private String methodPayment;
+
+    @Column
+    private String projectCredit;
+
+    @Column
+    private String creditDetail;
+
+    @Column
+    private String creditId;
+
     @Column(columnDefinition = "jsonb")
     @JdbcTypeCode(SqlTypes.JSON)
     private List<String> image;
