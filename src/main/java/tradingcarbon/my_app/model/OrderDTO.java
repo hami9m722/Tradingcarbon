@@ -12,13 +12,13 @@ public class OrderDTO {
 
     private Long orderId;
 
-    @Size()
+    @Size(max = 255)
     private String numberCredits;
 
-    @Size()
+    @Size(max = 255)
     private String price;
 
-    @Size()
+    @Size(max = 255)
     private String total;
 
     @OrderOrderStatusIdUnique
