@@ -46,22 +46,7 @@ public @interface OrderOrderStatusIdUnique {
             this.request = request;
         }
 
-        @Override
-        public boolean isValid(final Long value, final ConstraintValidatorContext cvContext) {
-            if (value == null) {
-                // no value present
-                return true;
-            }
-            @SuppressWarnings("unchecked") final Map<String, String> pathVariables =
-                    ((Map<String, String>)request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE));
-            final String currentId = pathVariables.get("orderId");
-            if (currentId != null && value.equals(orderService.get(Long.parseLong(currentId)).getOrderStatusId())) {
-                // value hasn't changed
-                return true;
-            }
-            return !orderService.orderStatusIdExists(value);
-        }
-
+        
     }
 
 }
