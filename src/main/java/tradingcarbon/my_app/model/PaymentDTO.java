@@ -12,13 +12,13 @@ public class PaymentDTO {
 
     private UUID paymentId;
 
-    @Size()
+    @Size(max = 255)
     private String datePayment;
 
-    @Size()
+    @Size(max = 255)
     private String total;
 
-    @Size()
+    @Size(max = 255)
     private String paymentNumber;
 
 }

@@ -72,6 +72,18 @@ public class User {
     @JoinColumn(name = "review_company_id_id")
     private ReviewCompany reviewCompanyId;
 
+    @ManyToMany(mappedBy = "userId")
+    private Set<Chats> chatId;
 
+    @OneToMany(mappedBy = "senderId")
+    private Set<Messages> messagesId;
+
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private OffsetDateTime dateCreated;
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    private OffsetDateTime lastUpdated;
 
 }
