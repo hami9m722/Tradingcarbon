@@ -52,12 +52,9 @@ public class Staff {
     @OneToMany(mappedBy = "staffId")
     private Set<Order> orderId;
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private OffsetDateTime dateCreated;
 
     @LastModifiedDate
-    @Column(nullable = false)
+    @Column(nullable = true)
     private OffsetDateTime lastUpdated;
 
 }
