@@ -4,12 +4,18 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import tradingcarbon.my_app.domain.Contract;
 import tradingcarbon.my_app.domain.Order;
 import tradingcarbon.my_app.domain.OrderStatus;
 import tradingcarbon.my_app.domain.Payment;
 import tradingcarbon.my_app.domain.Staff;
 import tradingcarbon.my_app.domain.User;
 import tradingcarbon.my_app.model.OrderDTO;
+import tradingcarbon.my_app.repos.ContractRepository;
+import tradingcarbon.my_app.repos.OrderRepository;
+import tradingcarbon.my_app.repos.OrderStatusRepository;
+import tradingcarbon.my_app.repos.PaymentRepository;
+import tradingcarbon.my_app.repos.StaffRepository;
 import tradingcarbon.my_app.repos.UserRepository;
 import tradingcarbon.my_app.util.NotFoundException;
 
@@ -62,6 +68,48 @@ public class OrderService {
         orderRepository.save(order);
     }
 
+    public void delete(final Long orderId) {
+        orderRepository.deleteById(orderId);
+    }
+
+    private OrderDTO mapToDTO(final Order order, final OrderDTO orderDTO) {
+        orderDTO.setOrderId(order.getOrderId());
+        orderDTO.setNumberCredits(order.getNumberCredits());
+        orderDTO.setPrice(order.getPrice());
+        orderDTO.setTotal(order.getTotal());
+        orderDTO.setOrderStatusId(order.getOrderStatusId() == null ? null : order.getOrderStatusId().getOrderStatusId());
+        orderDTO.setSellerId(order.getSellerId() == null ? null : order.getSellerId().getUserId());
+        orderDTO.setBuyerId(order.getBuyerId() == null ? null : order.getBuyerId().getUserId());
+        orderDTO.setPaymentId(order.getPaymentId() == null ? null : order.getPaymentId().getPaymentId());
+        orderDTO.setConstractId(order.getConstractId() == null ? null : order.getConstractId().getConstractId());
+        orderDTO.setStaffId(order.getStaffId() == null ? null : order.getStaffId().getStaffId());
+        return orderDTO;
+    }
+
+    private Order mapToEntity(final OrderDTO orderDTO, final Order order) {
+        order.setNumberCredits(orderDTO.getNumberCredits());
+        order.setPrice(orderDTO.getPrice());
+        order.setTotal(orderDTO.getTotal());
+        final OrderStatus orderStatusId = orderDTO.getOrderStatusId() == null ? null : orderStatusRepository.findById(orderDTO.getOrderStatusId())
+                .orElseThrow(() -> new NotFoundException("orderStatusId not found"));
+        order.setOrderStatusId(orderStatusId);
+        final User sellerId = orderDTO.getSellerId() == null ? null : userRepository.findById(orderDTO.getSellerId())
+                .orElseThrow(() -> new NotFoundException("sellerId not found"));
+        order.setSellerId(sellerId);
+        final User buyerId = orderDTO.getBuyerId() == null ? null : userRepository.findById(orderDTO.getBuyerId())
+                .orElseThrow(() -> new NotFoundException("buyerId not found"));
+        order.setBuyerId(buyerId);
+        final Payment paymentId = orderDTO.getPaymentId() == null ? null : paymentRepository.findById(orderDTO.getPaymentId())
+                .orElseThrow(() -> new NotFoundException("paymentId not found"));
+        order.setPaymentId(paymentId);
+        final Contract constractId = orderDTO.getConstractId() == null ? null : contractRepository.findById(orderDTO.getConstractId())
+                .orElseThrow(() -> new NotFoundException("constractId not found"));
+        order.setConstractId(constractId);
+        final Staff staffId = orderDTO.getStaffId() == null ? null : staffRepository.findById(orderDTO.getStaffId())
+                .orElseThrow(() -> new NotFoundException("staffId not found"));
+        order.setStaffId(staffId);
+        return order;
+    }
 
     public boolean orderStatusIdExists(final Long orderStatusId) {
         return orderRepository.existsByOrderStatusIdOrderStatusId(orderStatusId);
