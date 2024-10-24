@@ -24,10 +24,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Order findFirstByStaffId(Staff staff);
 
-    boolean existsByOrderStatusIdOrderStatusId(Long orderStatusId);
-
-    boolean existsByPaymentIdPaymentId(UUID paymentId);
-
-    boolean existsByConstractIdConstractId(Long constractId);
 
 }
