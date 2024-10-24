@@ -48,8 +48,23 @@ public class ProjectService {
                 .orElseThrow(NotFoundException::new);
     }
 
-   
-    
+    public UUID create(final ProjectDTO projectDTO) {
+        final Project project = new Project();
+        mapToEntity(projectDTO, project);
+        return projectRepository.save(project).getProjectId();
+    }
+
+    public void update(final UUID projectId, final ProjectDTO projectDTO) {
+        final Project project = projectRepository.findById(projectId)
+                .orElseThrow(NotFoundException::new);
+        mapToEntity(projectDTO, project);
+        projectRepository.save(project);
+    }
+
+    public void delete(final UUID projectId) {
+        projectRepository.deleteById(projectId);
+    }
+
     private ProjectDTO mapToDTO(final Project project, final ProjectDTO projectDTO) {
         projectDTO.setProjectId(project.getProjectId());
         projectDTO.setProjectName(project.getProjectName());
