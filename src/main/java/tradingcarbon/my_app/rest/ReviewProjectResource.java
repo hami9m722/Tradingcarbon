@@ -41,6 +41,21 @@ public class ReviewProjectResource {
         return ResponseEntity.ok(reviewProjectService.get(reviewProjectId));
     }
 
+    @PostMapping
+    @ApiResponse(responseCode = "201")
+    public ResponseEntity<Long> createReviewProject(
+            @RequestBody @Valid final ReviewProjectDTO reviewProjectDTO) {
+        final Long createdReviewProjectId = reviewProjectService.create(reviewProjectDTO);
+        return new ResponseEntity<>(createdReviewProjectId, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{reviewProjectId}")
+    public ResponseEntity<Long> updateReviewProject(
+            @PathVariable(name = "reviewProjectId") final Long reviewProjectId,
+            @RequestBody @Valid final ReviewProjectDTO reviewProjectDTO) {
+        reviewProjectService.update(reviewProjectId, reviewProjectDTO);
+        return ResponseEntity.ok(reviewProjectId);
+    }
 
     @DeleteMapping("/{reviewProjectId}")
     @ApiResponse(responseCode = "204")
@@ -50,7 +65,8 @@ public class ReviewProjectResource {
         if (referencedWarning != null) {
             throw new ReferencedException(referencedWarning);
         }
-        return ;
+        reviewProjectService.delete(reviewProjectId);
+        return ResponseEntity.noContent().build();
     }
 
 }

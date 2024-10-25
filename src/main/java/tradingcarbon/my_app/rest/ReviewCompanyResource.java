@@ -32,7 +32,7 @@ public class ReviewCompanyResource {
 
     @GetMapping
     public ResponseEntity<List<ReviewCompanyDTO>> getAllReviewCompanies() {
-        return ResponseEntity.ok();
+        return ResponseEntity.ok(reviewCompanyService.findAll());
     }
 
     @GetMapping("/{reviewCompanyId}")
@@ -41,7 +41,21 @@ public class ReviewCompanyResource {
         return ResponseEntity.ok(reviewCompanyService.get(reviewCompanyId));
     }
 
+    @PostMapping
+    @ApiResponse(responseCode = "201")
+    public ResponseEntity<Long> createReviewCompany(
+            @RequestBody @Valid final ReviewCompanyDTO reviewCompanyDTO) {
+        final Long createdReviewCompanyId = reviewCompanyService.create(reviewCompanyDTO);
+        return new ResponseEntity<>(createdReviewCompanyId, HttpStatus.CREATED);
+    }
 
+    @PutMapping("/{reviewCompanyId}")
+    public ResponseEntity<Long> updateReviewCompany(
+            @PathVariable(name = "reviewCompanyId") final Long reviewCompanyId,
+            @RequestBody @Valid final ReviewCompanyDTO reviewCompanyDTO) {
+        reviewCompanyService.update(reviewCompanyId, reviewCompanyDTO);
+        return ResponseEntity.ok(reviewCompanyId);
+    }
 
     @DeleteMapping("/{reviewCompanyId}")
     @ApiResponse(responseCode = "204")
@@ -52,7 +66,7 @@ public class ReviewCompanyResource {
             throw new ReferencedException(referencedWarning);
         }
         reviewCompanyService.delete(reviewCompanyId);
-        
+        return ResponseEntity.noContent().build();
     }
 
 }
