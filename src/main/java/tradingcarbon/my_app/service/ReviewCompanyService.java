@@ -37,11 +37,22 @@ public class ReviewCompanyService {
                 .orElseThrow(NotFoundException::new);
     }
 
-    //create
+    public Long create(final ReviewCompanyDTO reviewCompanyDTO) {
+        final ReviewCompany reviewCompany = new ReviewCompany();
+        mapToEntity(reviewCompanyDTO, reviewCompany);
+        return reviewCompanyRepository.save(reviewCompany).getReviewCompanyId();
+    }
 
-    //update
-    
-    //delete
+    public void update(final Long reviewCompanyId, final ReviewCompanyDTO reviewCompanyDTO) {
+        final ReviewCompany reviewCompany = reviewCompanyRepository.findById(reviewCompanyId)
+                .orElseThrow(NotFoundException::new);
+        mapToEntity(reviewCompanyDTO, reviewCompany);
+        reviewCompanyRepository.save(reviewCompany);
+    }
+
+    public void delete(final Long reviewCompanyId) {
+        reviewCompanyRepository.deleteById(reviewCompanyId);
+    }
 
     private ReviewCompanyDTO mapToDTO(final ReviewCompany reviewCompany,
             final ReviewCompanyDTO reviewCompanyDTO) {

@@ -37,6 +37,22 @@ public class ReviewProjectService {
                 .orElseThrow(NotFoundException::new);
     }
 
+    public Long create(final ReviewProjectDTO reviewProjectDTO) {
+        final ReviewProject reviewProject = new ReviewProject();
+        mapToEntity(reviewProjectDTO, reviewProject);
+        return reviewProjectRepository.save(reviewProject).getReviewProjectId();
+    }
+
+    public void update(final Long reviewProjectId, final ReviewProjectDTO reviewProjectDTO) {
+        final ReviewProject reviewProject = reviewProjectRepository.findById(reviewProjectId)
+                .orElseThrow(NotFoundException::new);
+        mapToEntity(reviewProjectDTO, reviewProject);
+        reviewProjectRepository.save(reviewProject);
+    }
+
+    public void delete(final Long reviewProjectId) {
+        reviewProjectRepository.deleteById(reviewProjectId);
+    }
 
     private ReviewProjectDTO mapToDTO(final ReviewProject reviewProject,
             final ReviewProjectDTO reviewProjectDTO) {
@@ -49,6 +65,8 @@ public class ReviewProjectService {
 
     private ReviewProject mapToEntity(final ReviewProjectDTO reviewProjectDTO,
             final ReviewProject reviewProject) {
+        reviewProject.setText(reviewProjectDTO.getText());
+        reviewProject.setStar(reviewProjectDTO.getStar());
         reviewProject.setReviewImage(reviewProjectDTO.getReviewImage());
         return reviewProject;
     }
@@ -58,7 +76,11 @@ public class ReviewProjectService {
         final ReviewProject reviewProject = reviewProjectRepository.findById(reviewProjectId)
                 .orElseThrow(NotFoundException::new);
         final Project reviewProjectIdProject = projectRepository.findFirstByReviewProjectId(reviewProject);
-        
+        if (reviewProjectIdProject != null) {
+            referencedWarning.setKey("reviewProject.project.reviewProjectId.referenced");
+            referencedWarning.addParam(reviewProjectIdProject.getProjectId());
+            return referencedWarning;
+        }
         return null;
     }
 
