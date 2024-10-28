@@ -76,11 +76,7 @@ public class ReviewCompanyService {
         final ReviewCompany reviewCompany = reviewCompanyRepository.findById(reviewCompanyId)
                 .orElseThrow(NotFoundException::new);
         final User reviewCompanyIdUser = userRepository.findFirstByReviewCompanyId(reviewCompany);
-        if (reviewCompanyIdUser != null) {
-            referencedWarning.setKey("reviewCompany.user.reviewCompanyId.referenced");
-            referencedWarning.addParam(reviewCompanyIdUser.getUserId());
-            return referencedWarning;
-        }
+        
         return null;
     }
 
