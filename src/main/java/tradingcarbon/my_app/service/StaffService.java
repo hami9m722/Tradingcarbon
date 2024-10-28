@@ -25,7 +25,10 @@ public class StaffService {
     }
 
     public List<StaffDTO> findAll() {
-        
+        final List<Staff> staffs = staffRepository.findAll(Sort.by("staffId"));
+        return staffs.stream()
+                .map(staff -> mapToDTO(staff, new StaffDTO()))
+                .toList();
     }
 
     public StaffDTO get(final Long staffId) {
@@ -37,7 +40,7 @@ public class StaffService {
     public Long create(final StaffDTO staffDTO) {
         final Staff staff = new Staff();
         mapToEntity(staffDTO, staff);
-        return ;
+        return staffRepository.save(staff).getStaffId();
     }
 
     public void update(final Long staffId, final StaffDTO staffDTO) {
