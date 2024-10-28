@@ -38,11 +38,22 @@ public class UserResource {
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserDTO> getUser(@PathVariable(name = "userId") final UUID userId) {
-       
+        return ResponseEntity.ok(userService.get(userId));
     }
 
+    @PostMapping
+    @ApiResponse(responseCode = "201")
+    public ResponseEntity<UUID> createUser(@RequestBody @Valid final UserDTO userDTO) {
+        final UUID createdUserId = userService.create(userDTO);
+        return new ResponseEntity<>(createdUserId, HttpStatus.CREATED);
+    }
 
-    
+    @PutMapping("/{userId}")
+    public ResponseEntity<UUID> updateUser(@PathVariable(name = "userId") final UUID userId,
+            @RequestBody @Valid final UserDTO userDTO) {
+        userService.update(userId, userDTO);
+        return ResponseEntity.ok(userId);
+    }
 
     @DeleteMapping("/{userId}")
     @ApiResponse(responseCode = "204")

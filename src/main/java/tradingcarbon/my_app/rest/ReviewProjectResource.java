@@ -57,16 +57,5 @@ public class ReviewProjectResource {
         return ResponseEntity.ok(reviewProjectId);
     }
 
-    @DeleteMapping("/{reviewProjectId}")
-    @ApiResponse(responseCode = "204")
-    public ResponseEntity<Void> deleteReviewProject(
-            @PathVariable(name = "reviewProjectId") final Long reviewProjectId) {
-        final ReferencedWarning referencedWarning = reviewProjectService.getReferencedWarning(reviewProjectId);
-        if (referencedWarning != null) {
-            throw new ReferencedException(referencedWarning);
-        }
-        reviewProjectService.delete(reviewProjectId);
-        return ResponseEntity.noContent().build();
-    }
-
+    
 }
