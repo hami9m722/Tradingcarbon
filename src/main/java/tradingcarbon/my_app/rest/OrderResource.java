@@ -25,7 +25,7 @@ public class OrderResource {
     private final OrderService orderService;
 
     public OrderResource(final OrderService orderService) {
-   
+        this.orderService = orderService;
     }
 
     @GetMapping
@@ -38,7 +38,19 @@ public class OrderResource {
         return ResponseEntity.ok(orderService.get(orderId));
     }
 
+    @PostMapping
+    @ApiResponse(responseCode = "201")
+    public ResponseEntity<Long> createOrder(@RequestBody @Valid final OrderDTO orderDTO) {
+        final Long createdOrderId = orderService.create(orderDTO);
+        return new ResponseEntity<>(createdOrderId, HttpStatus.CREATED);
+    }
 
+    @PutMapping("/{orderId}")
+    public ResponseEntity<Long> updateOrder(@PathVariable(name = "orderId") final Long orderId,
+            @RequestBody @Valid final OrderDTO orderDTO) {
+        orderService.update(orderId, orderDTO);
+        return ResponseEntity.ok(orderId);
+    }
 
     @DeleteMapping("/{orderId}")
     @ApiResponse(responseCode = "204")

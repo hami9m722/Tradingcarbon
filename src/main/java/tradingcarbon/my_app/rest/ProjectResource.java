@@ -28,7 +28,7 @@ public class ProjectResource {
     private final ProjectService projectService;
 
     public ProjectResource(final ProjectService projectService) {
-        
+        this.projectService = projectService;
     }
 
     @GetMapping
@@ -42,6 +42,20 @@ public class ProjectResource {
         return ResponseEntity.ok(projectService.get(projectId));
     }
 
+    @PostMapping
+    @ApiResponse(responseCode = "201")
+    public ResponseEntity<UUID> createProject(@RequestBody @Valid final ProjectDTO projectDTO) {
+        final UUID createdProjectId = projectService.create(projectDTO);
+        return new ResponseEntity<>(createdProjectId, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{projectId}")
+    public ResponseEntity<UUID> updateProject(
+            @PathVariable(name = "projectId") final UUID projectId,
+            @RequestBody @Valid final ProjectDTO projectDTO) {
+        projectService.update(projectId, projectDTO);
+        return ResponseEntity.ok(projectId);
+    }
 
     @DeleteMapping("/{projectId}")
     @ApiResponse(responseCode = "204")
