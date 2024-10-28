@@ -7,5 +7,6 @@ import tradingcarbon.my_app.domain.User;
 
 public interface MessagesRepository extends JpaRepository<Messages, Long> {
 
+    Messages findFirstBySenderId(User user);
 
 }
