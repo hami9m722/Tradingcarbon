@@ -43,11 +43,6 @@ public class Staff {
     @Column
     private String password;
 
-    @Column
-    private String staffName;
-
-    @Column
-    private String staffPhone;
 
     @OneToMany(mappedBy = "staffId")
     private Set<Order> orderId;
