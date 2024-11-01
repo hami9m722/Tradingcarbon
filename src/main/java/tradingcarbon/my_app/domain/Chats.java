@@ -61,5 +61,12 @@ public class Chats {
     @OneToMany(mappedBy = "chatId")
     private Set<Messages> messagesId;
 
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private OffsetDateTime dateCreated;
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    private OffsetDateTime lastUpdated;
 
 }

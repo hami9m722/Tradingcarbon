@@ -64,4 +64,12 @@ public class Messages {
     @OneToMany(mappedBy = "messagesId")
     private Set<MessageStatus> messageStatusId;
 
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private OffsetDateTime dateCreated;
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    private OffsetDateTime lastUpdated;
+
 }
