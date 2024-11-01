@@ -14,46 +14,53 @@ public class ProjectDTO {
 
     private UUID projectId;
 
-    @Size()
+    @Size(max = 255)
     private String projectName;
 
-    @Size()
+    @Size(max = 255)
     private String projectAddress;
 
-    @Size()
+    @Size(max = 255)
     private String projectSize;
 
-    @Size()
+    @Size(max = 255)
     private String projectTimeStart;
 
-    @Size()
+    @Size(max = 255)
     private String projectTimeEnd;
 
-    @Size()
+    @Size(max = 255)
     private String projectRangeCarbon;
 
-    @Size()
+    @Size(max = 255)
     private String organizationProvide;
 
-    @Size()
+    @Size(max = 255)
     private String numberCarBonCredit;
 
-    @Size()
+    @Size(max = 255)
     private String creditTimeStart;
 
-    @Size()
+    @Size(max = 255)
     private String price;
 
-    @Size()
+    @Size(max = 255)
+    private String methodPayment;
+
+    @Size(max = 255)
     private String projectCredit;
 
+    @Size(max = 255)
+    private String creditDetail;
 
-    @Size()
+    @Size(max = 255)
     private String creditId;
 
-    private List<@Size() String> image;
+    private List<@Size(max = 255) String> image;
 
     @NotNull
     private UUID userId;
+
+    private Long reviewProjectId;
 
 }

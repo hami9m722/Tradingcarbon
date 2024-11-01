@@ -48,5 +48,12 @@ public class MessageStatus {
     @JoinColumn(name = "messages_id_id")
     private Messages messagesId;
 
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private OffsetDateTime dateCreated;
+
+    @LastModifiedDate
+    @Column(nullable = false)
+    private OffsetDateTime lastUpdated;
 
 }
