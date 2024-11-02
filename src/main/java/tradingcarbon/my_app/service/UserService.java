@@ -112,7 +112,18 @@ public class UserService {
         final ReferencedWarning referencedWarning = new ReferencedWarning();
         final User user = userRepository.findById(userId)
                 .orElseThrow(NotFoundException::new);
-        
+        final Project userIdProject = projectRepository.findFirstByUserId(user);
+        if (userIdProject != null) {
+            referencedWarning.setKey("user.project.userId.referenced");
+            referencedWarning.addParam(userIdProject.getProjectId());
+            return referencedWarning;
+        }
+        final Order sellerIdOrder = orderRepository.findFirstBySellerId(user);
+        if (sellerIdOrder != null) {
+            referencedWarning.setKey("user.order.sellerId.referenced");
+            referencedWarning.addParam(sellerIdOrder.getOrderId());
+            return referencedWarning;
+        }
         final Order buyerIdOrder = orderRepository.findFirstByBuyerId(user);
         if (buyerIdOrder != null) {
             referencedWarning.setKey("user.order.buyerId.referenced");

@@ -43,13 +43,21 @@ public class Staff {
     @Column
     private String password;
 
+    @Column
+    private String staffName;
+
+    @Column
+    private String staffPhone;
 
     @OneToMany(mappedBy = "staffId")
     private Set<Order> orderId;
 
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private OffsetDateTime dateCreated;
 
     @LastModifiedDate
-    @Column(nullable = true)
+    @Column(nullable = false)
     private OffsetDateTime lastUpdated;
 
 }

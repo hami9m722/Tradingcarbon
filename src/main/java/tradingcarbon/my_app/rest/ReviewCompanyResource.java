@@ -49,6 +49,24 @@ public class ReviewCompanyResource {
         return new ResponseEntity<>(createdReviewCompanyId, HttpStatus.CREATED);
     }
 
-    
+    @PutMapping("/{reviewCompanyId}")
+    public ResponseEntity<Long> updateReviewCompany(
+            @PathVariable(name = "reviewCompanyId") final Long reviewCompanyId,
+            @RequestBody @Valid final ReviewCompanyDTO reviewCompanyDTO) {
+        reviewCompanyService.update(reviewCompanyId, reviewCompanyDTO);
+        return ResponseEntity.ok(reviewCompanyId);
+    }
+
+    @DeleteMapping("/{reviewCompanyId}")
+    @ApiResponse(responseCode = "204")
+    public ResponseEntity<Void> deleteReviewCompany(
+            @PathVariable(name = "reviewCompanyId") final Long reviewCompanyId) {
+        final ReferencedWarning referencedWarning = reviewCompanyService.getReferencedWarning(reviewCompanyId);
+        if (referencedWarning != null) {
+            throw new ReferencedException(referencedWarning);
+        }
+        reviewCompanyService.delete(reviewCompanyId);
+        return ResponseEntity.noContent().build();
+    }
 
 }
