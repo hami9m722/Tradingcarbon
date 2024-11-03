@@ -98,7 +98,7 @@ public abstract class BaseIT {
     }
 
     @SneakyThrows
-    public String readResource(final String resourceName) throws IOException {
+    public String readResource(final String resourceName) {
         return StreamUtils.copyToString(getClass().getResourceAsStream(resourceName), StandardCharsets.UTF_8);
     }
 
