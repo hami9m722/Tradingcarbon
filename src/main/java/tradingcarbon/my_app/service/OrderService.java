@@ -90,7 +90,24 @@ public class OrderService {
         order.setNumberCredits(orderDTO.getNumberCredits());
         order.setPrice(orderDTO.getPrice());
         order.setTotal(orderDTO.getTotal());
-        
+        final OrderStatus orderStatusId = orderDTO.getOrderStatusId() == null ? null : orderStatusRepository.findById(orderDTO.getOrderStatusId())
+                .orElseThrow(() -> new NotFoundException("orderStatusId not found"));
+        order.setOrderStatusId(orderStatusId);
+        final User sellerId = orderDTO.getSellerId() == null ? null : userRepository.findById(orderDTO.getSellerId())
+                .orElseThrow(() -> new NotFoundException("sellerId not found"));
+        order.setSellerId(sellerId);
+        final User buyerId = orderDTO.getBuyerId() == null ? null : userRepository.findById(orderDTO.getBuyerId())
+                .orElseThrow(() -> new NotFoundException("buyerId not found"));
+        order.setBuyerId(buyerId);
+        final Payment paymentId = orderDTO.getPaymentId() == null ? null : paymentRepository.findById(orderDTO.getPaymentId())
+                .orElseThrow(() -> new NotFoundException("paymentId not found"));
+        order.setPaymentId(paymentId);
+        final Contract constractId = orderDTO.getConstractId() == null ? null : contractRepository.findById(orderDTO.getConstractId())
+                .orElseThrow(() -> new NotFoundException("constractId not found"));
+        order.setConstractId(constractId);
+        final Staff staffId = orderDTO.getStaffId() == null ? null : staffRepository.findById(orderDTO.getStaffId())
+                .orElseThrow(() -> new NotFoundException("staffId not found"));
+        order.setStaffId(staffId);
         return order;
     }
 
