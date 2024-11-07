@@ -56,6 +56,17 @@ public class OrderStatusResourceTest extends BaseIT {
     }
 
     @Test
+    void getOrderStatus_notFound() {
+        RestAssured
+                .given()
+                .accept(ContentType.JSON)
+                .when()
+                .get("/api/orderStatuses/1966")
+                .then()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .body("code", Matchers.equalTo("NOT_FOUND"));
+    }
+    @Test
     @Sql("/data/orderStatusData.sql")
     void updateOrderStatus_success() {
         RestAssured

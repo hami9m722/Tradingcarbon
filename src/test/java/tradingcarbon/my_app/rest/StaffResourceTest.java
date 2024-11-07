@@ -11,86 +11,98 @@ import org.springframework.test.context.jdbc.Sql;
 import tradingcarbon.my_app.config.BaseIT;
 
 
-public class OrderResourceTest extends BaseIT {
+public class StaffResourceTest extends BaseIT {
 
     @Test
-    @Sql("/data/orderData.sql")
-    void getAllOrders_success() {
+    @Sql("/data/staffData.sql")
+    void getAllStaffs_success() {
         RestAssured
                 .given()
                     .accept(ContentType.JSON)
                 .when()
-                    .get("/api/orders")
+                    .get("/api/staffs")
                 .then()
                     .statusCode(HttpStatus.OK.value())
                     .body("size()", Matchers.equalTo(2))
-                    .body("get(0).orderId", Matchers.equalTo(1200));
+                    .body("get(0).staffId", Matchers.equalTo(1800));
     }
 
     @Test
-    @Sql("/data/orderData.sql")
-    void getOrder_success() {
+    @Sql("/data/staffData.sql")
+    void getStaff_success() {
         RestAssured
                 .given()
                     .accept(ContentType.JSON)
                 .when()
-                    .get("/api/orders/1200")
+                    .get("/api/staffs/1800")
                 .then()
                     .statusCode(HttpStatus.OK.value())
-                    .body("numberCredits", Matchers.equalTo("Quis nostrud exerci."));
+                    .body("email", Matchers.equalTo("Sed ut perspiciatis."));
     }
     @Test
-    void getOrder_notFound() {
+    void getPayment_notFound() {
         RestAssured
                 .given()
                 .accept(ContentType.JSON)
                 .when()
-                .get("/api/orders/1866")
+                .get("/api/payments/234920ea-2540-3ec7-bbee-9efce43ea25e")
                 .then()
                 .statusCode(HttpStatus.NOT_FOUND.value())
                 .body("code", Matchers.equalTo("NOT_FOUND"));
     }
     @Test
-    void createOrder_success() {
+    void getStaff_notFound() {
+        RestAssured
+                .given()
+                    .accept(ContentType.JSON)
+                .when()
+                    .get("/api/staffs/2466")
+                .then()
+                    .statusCode(HttpStatus.NOT_FOUND.value())
+                    .body("code", Matchers.equalTo("NOT_FOUND"));
+    }
+
+    @Test
+    void createStaff_success() {
         RestAssured
                 .given()
                     .accept(ContentType.JSON)
                     .contentType(ContentType.JSON)
-                    .body(readResource("/requests/orderDTORequest.json"))
+                    .body(readResource("/requests/staffDTORequest.json"))
                 .when()
-                    .post("/api/orders")
+                    .post("/api/staffs")
                 .then()
                     .statusCode(HttpStatus.CREATED.value());
-        assertEquals(1, orderRepository.count());
+        assertEquals(1, staffRepository.count());
     }
 
     @Test
-    @Sql("/data/orderData.sql")
-    void updateOrder_success() {
+    @Sql("/data/staffData.sql")
+    void updateStaff_success() {
         RestAssured
                 .given()
                     .accept(ContentType.JSON)
                     .contentType(ContentType.JSON)
-                    .body(readResource("/requests/orderDTORequest.json"))
+                    .body(readResource("/requests/staffDTORequest.json"))
                 .when()
-                    .put("/api/orders/1200")
+                    .put("/api/staffs/1800")
                 .then()
                     .statusCode(HttpStatus.OK.value());
-        assertEquals("At vero eos.", orderRepository.findById(((long)1200)).orElseThrow().getNumberCredits());
-        assertEquals(2, orderRepository.count());
+        assertEquals("Nulla facilisis.", staffRepository.findById(((long)1800)).orElseThrow().getEmail());
+        assertEquals(2, staffRepository.count());
     }
 
     @Test
-    @Sql("/data/orderData.sql")
-    void deleteOrder_success() {
+    @Sql("/data/staffData.sql")
+    void deleteStaff_success() {
         RestAssured
                 .given()
                     .accept(ContentType.JSON)
                 .when()
-                    .delete("/api/orders/1200")
+                    .delete("/api/staffs/1800")
                 .then()
                     .statusCode(HttpStatus.NO_CONTENT.value());
-        assertEquals(1, orderRepository.count());
+        assertEquals(1, staffRepository.count());
     }
 
 }

@@ -40,7 +40,17 @@ public class PaymentResourceTest extends BaseIT {
                     .statusCode(HttpStatus.OK.value())
                     .body("datePayment", Matchers.equalTo("At vero eos."));
     }
-
+    @Test
+    void getPayment_notFound() {
+        RestAssured
+                .given()
+                .accept(ContentType.JSON)
+                .when()
+                .get("/api/payments/234920ea-2540-3ec7-bbee-9efce43ea25e")
+                .then()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .body("code", Matchers.equalTo("NOT_FOUND"));
+    }
     @Test
     void createPayment_success() {
         RestAssured
