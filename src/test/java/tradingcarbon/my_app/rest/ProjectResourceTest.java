@@ -40,7 +40,17 @@ public class ProjectResourceTest extends BaseIT {
                     .statusCode(HttpStatus.OK.value())
                     .body("projectName", Matchers.equalTo("Et ea rebum."));
     }
-
+    @Test
+    void getProject_notFound() {
+        RestAssured
+                .given()
+                .accept(ContentType.JSON)
+                .when()
+                .get("/api/projects/23a93ba8-9a5b-3c6c-a26e-49b88973f46e")
+                .then()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .body("code", Matchers.equalTo("NOT_FOUND"));
+    }
 
     @Test
     @Sql("/data/userData.sql")

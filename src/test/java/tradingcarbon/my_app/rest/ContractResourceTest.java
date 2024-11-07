@@ -11,86 +11,88 @@ import org.springframework.test.context.jdbc.Sql;
 import tradingcarbon.my_app.config.BaseIT;
 
 
-public class OrderResourceTest extends BaseIT {
+public class ContractResourceTest extends BaseIT {
 
     @Test
-    @Sql("/data/orderData.sql")
-    void getAllOrders_success() {
+    @Sql("/data/contractData.sql")
+    void getAllContracts_success() {
         RestAssured
                 .given()
                     .accept(ContentType.JSON)
                 .when()
-                    .get("/api/orders")
+                    .get("/api/contracts")
                 .then()
                     .statusCode(HttpStatus.OK.value())
                     .body("size()", Matchers.equalTo(2))
-                    .body("get(0).orderId", Matchers.equalTo(1200));
+                    .body("get(0).constractId", Matchers.equalTo(1500));
     }
 
     @Test
-    @Sql("/data/orderData.sql")
-    void getOrder_success() {
+    @Sql("/data/contractData.sql")
+    void getContract_success() {
         RestAssured
                 .given()
                     .accept(ContentType.JSON)
                 .when()
-                    .get("/api/orders/1200")
+                    .get("/api/contracts/1500")
                 .then()
                     .statusCode(HttpStatus.OK.value())
-                    .body("numberCredits", Matchers.equalTo("Quis nostrud exerci."));
+                    .body("constractFile", Matchers.equalTo("Vel illum dolore."));
     }
+
     @Test
-    void getOrder_notFound() {
+    void getContract_notFound() {
         RestAssured
                 .given()
-                .accept(ContentType.JSON)
+                    .accept(ContentType.JSON)
                 .when()
-                .get("/api/orders/1866")
+                    .get("/api/contracts/2166")
                 .then()
-                .statusCode(HttpStatus.NOT_FOUND.value())
-                .body("code", Matchers.equalTo("NOT_FOUND"));
+                    .statusCode(HttpStatus.NOT_FOUND.value())
+                    .body("code", Matchers.equalTo("NOT_FOUND"));
     }
+
     @Test
-    void createOrder_success() {
+    void createContract_success() {
         RestAssured
                 .given()
                     .accept(ContentType.JSON)
                     .contentType(ContentType.JSON)
-                    .body(readResource("/requests/orderDTORequest.json"))
+                    .body(readResource("/requests/contractDTORequest.json"))
                 .when()
-                    .post("/api/orders")
+                    .post("/api/contracts")
                 .then()
                     .statusCode(HttpStatus.CREATED.value());
-        assertEquals(1, orderRepository.count());
+        assertEquals(1, contractRepository.count());
     }
 
     @Test
-    @Sql("/data/orderData.sql")
-    void updateOrder_success() {
+    @Sql("/data/contractData.sql")
+    void updateContract_success() {
         RestAssured
                 .given()
                     .accept(ContentType.JSON)
                     .contentType(ContentType.JSON)
-                    .body(readResource("/requests/orderDTORequest.json"))
+                    .body(readResource("/requests/contractDTORequest.json"))
                 .when()
-                    .put("/api/orders/1200")
+                    .put("/api/contracts/1500")
                 .then()
                     .statusCode(HttpStatus.OK.value());
-        assertEquals("At vero eos.", orderRepository.findById(((long)1200)).orElseThrow().getNumberCredits());
-        assertEquals(2, orderRepository.count());
+        assertEquals("Sed diam nonumy.", contractRepository.findById(((long)1500)).orElseThrow().getConstractFile());
+        assertEquals(2, contractRepository.count());
     }
 
     @Test
-    @Sql("/data/orderData.sql")
-    void deleteOrder_success() {
+    @Sql("/data/contractData.sql")
+    void deleteContract_success() {
         RestAssured
                 .given()
                     .accept(ContentType.JSON)
                 .when()
-                    .delete("/api/orders/1200")
+                    .delete("/api/contracts/1500")
                 .then()
                     .statusCode(HttpStatus.NO_CONTENT.value());
-        assertEquals(1, orderRepository.count());
+        assertEquals(1, contractRepository.count());
     }
 
 }

@@ -39,7 +39,17 @@ public class ReviewProjectResourceTest extends BaseIT {
                     .statusCode(HttpStatus.OK.value())
                     .body("text", Matchers.equalTo("Quis nostrud exerci."));
     }
-
+    @Test
+    void getReviewProject_notFound() {
+        RestAssured
+                .given()
+                .accept(ContentType.JSON)
+                .when()
+                .get("/api/reviewProjects/2366")
+                .then()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .body("code", Matchers.equalTo("NOT_FOUND"));
+    }
     @Test
     void createReviewProject_success() {
         RestAssured
